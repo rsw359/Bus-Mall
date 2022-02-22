@@ -2,123 +2,181 @@
 ///global variables///
 
 let votesAllowed = 5//decrement to end voting
+let ctx = document.getElementById('my-chart').getContext('2d')///canvas element
+
 
 let allProducts = []
 
-  let myContainer = document.getElementById('img-container');
-  let imgOne = document.getElementById('img-1');
-  let imgTwo = document.getElementById('img-2');
-  let imgThree = document.getElementById('img-3');
+let myContainer = document.getElementById('img-container');
+let imgOne = document.getElementById('img-1');
+let imgTwo = document.getElementById('img-2');
+let imgThree = document.getElementById('img-3');
 
-  let resultsBtn = document.getElementById('results-btn');
-  let showResults = document.getElementById('results-list');
+let resultsBtn = document.getElementById('results-btn');
+// let showResults = document.getElementById('results-list');
 
 
-  function product(name,fileExtension = 'jpg'){
-    this.name = name;
-    this.views = 0;
-    this.clicks = 0;
-    this.src = `img/${name}.${fileExtension}`;
-    
-    allProducts.push(this);//pushes objects into the allProducts array
-  }
-  //for png ('name', 'png')
-  new product('bag')///call all the 'new products'
-  new product('banana')
-  new product('bathroom')
-  new product('boots')
-  new product('breakfast')
-  new product('bubblegum')
-  new product('chair')
-  new product('cthulhu')
-  new product('dog-duck')
-  new product('dragon')
-  new product('pen')
-  new product('pet-sweep')
-  new product('scissors')
-  new product('shark')
-  new product('sweep', 'png')
-  new product('tauntaun')
-  new product('unicorn')
-  new product('water-can')
-  new product('wine-glass')
-  
+function product(name, fileExtension = 'jpg') {
+  this.name = name;
+  this.views = 0;
+  this.clicks = 0;
+  this.src = `img/${name}.${fileExtension}`;
 
-  console.log(allProducts)//checks the array on line 6
+  allProducts.push(this);//pushes objects into the allProducts array
+}
+//for png ('name', 'png')
+new product('bag')///call all the 'new products'
+new product('banana')
+new product('bathroom')
+new product('boots')
+new product('breakfast')
+new product('bubblegum')
+new product('chair')
+new product('cthulhu')
+new product('dog-duck')
+new product('dragon')
+new product('pen')
+new product('pet-sweep')
+new product('scissors')
+new product('shark')
+new product('sweep', 'png')
+new product('tauntaun')
+new product('unicorn')
+new product('water-can')
+new product('wine-glass')
 
-  //executable code//
 
-  //render images//
-  //need a random number between 0 and the length of the array -1//
-  function getRandomIndex(){
-    return Math.floor(Math.random()* allProducts.length)
-  }
+console.log(allProducts)//checks the array on line 6
 
-  
-  function renderImgs(){
-    
-    
-    let shownProducts = [];//holds our 3 nums
-    while(shownProducts.length < 3){//as long as 
-      let randomnums = getRandomIndex();
-      while(!shownProducts.includes(randomnums)){ //if the number is not present '!' 
-        shownProducts.push(randomnums);
-      }
+//executable code//
+
+//render images//
+//need a random number between 0 and the length of the array -1//
+function getRandomIndex() {
+  return Math.floor(Math.random() * allProducts.length)
+}
+
+
+let shownProducts = [];//holds our '6' nums//
+
+function renderImgs() {
+
+  while (shownProducts.length < 6) {//as long as //set this to 6 numbers also
+    let randomnums = getRandomIndex();
+    while (!shownProducts.includes(randomnums)) { //if the number is not present '!' 
+      shownProducts.push(randomnums);
     }
-    console.log(shownProducts)
-    
-    let productOneIndex = shownProducts.pop();
-    let productTwoIndex = shownProducts.pop();
-    let productThreeIndex = shownProducts.pop();
-
-    imgOne.src = allProducts[productOneIndex].src
-    imgOne.alt = allProducts[productOneIndex].name
-    allProducts[productOneIndex].views++
-
-    imgTwo.src = allProducts[productTwoIndex].src
-    imgTwo.alt = allProducts[productTwoIndex].name
-    allProducts[productTwoIndex].views++
-
-    imgThree.src = allProducts[productThreeIndex].src
-    imgThree.alt = allProducts[productThreeIndex].name
-    allProducts[productThreeIndex].views++
   }
+  
 
-  renderImgs();
+  //[1,2,3,4,5,6]
+
+  let productOneIndex = shownProducts.shift();//switch to .shift
+  let productTwoIndex = shownProducts.shift();
+  let productThreeIndex = shownProducts.shift();
+
+  imgOne.src = allProducts[productOneIndex].src
+  imgOne.alt = allProducts[productOneIndex].name
+  allProducts[productOneIndex].views++
+
+  imgTwo.src = allProducts[productTwoIndex].src
+  imgTwo.alt = allProducts[productTwoIndex].name
+  allProducts[productTwoIndex].views++
+
+  imgThree.src = allProducts[productThreeIndex].src
+  imgThree.alt = allProducts[productThreeIndex].name
+  allProducts[productThreeIndex].views++
+
+  console.log(allProducts)
+}
+
+renderImgs();
 
 
-  ///Event Listener//
+///Event Listener//
 
-  //listener one click//
-function handleClick(event){
+//listener one click//
+function handleClick(event) {
   votesAllowed--;//decrement votes
   let imgclicked = event.target.alt
 
-  for(let i = 0; i < allProducts.length; i++){///increments individual votes
-    if(imgclicked === allProducts[i].name){
+  for (let i = 0; i < allProducts.length; i++) {///increments individual votes
+    if (imgclicked === allProducts[i].name) {
       allProducts[i].clicks++;
     }
   }
 
   renderImgs()//re renders without refreshing
-  
-  if(votesAllowed === 0){
-    myContainer.removeEventListener('click', handleClick);
-  }
-} 
 
-//btn to show all results
-function handleShowResults(event){
- if(votesAllowed === 0){
-   for(let i = 0; i < allProducts.length; i++){
-   let li = document.createElement('li');
-   li.textContent = `${allProducts[i].name} was viewed ${allProducts[i].views} times, and was voted for ${allProducts[i].clicks} times.`
-   showResults.appendChild(li);
-  }
+  if (votesAllowed === 0) {
+    myContainer.removeEventListener('click', handleClick);
+    renderChart();
   }
 }
 
-  
+
+
+
 //grab what we want to listen to//
-  myContainer.addEventListener('click', handleClick)
-  resultsBtn.addEventListener('click', handleShowResults)
+myContainer.addEventListener('click', handleClick)
+// resultsBtn.addEventListener('click', handleShowResults)
+
+///////Chart
+function renderChart() {
+  //array of all product names for chart
+  let productNames = []
+  let productClicks = []
+  let productViews = []
+  //shiftulates product arrays
+  
+  for (let i = 0; i < allProducts.length; i++) {
+    productNames.push(allProducts[i].name);
+    productClicks.push(allProducts[i].clicks);
+    productViews.push(allProducts[i].views);
+  }
+  console.log(productNames, 'this is product names');
+  console.log(productClicks, 'this is product clicks');
+  console.log(productViews, 'this is product views')
+
+
+  let chartObject = {
+    type: 'bar',
+    data: {
+      labels: productNames,
+      datasets: [{
+        label: '# of Clicks',
+        data: productClicks,//********** data here*/
+        backgroundColor: [
+          'red'
+        ],
+        borderColor: [
+          'red'
+        ],
+        borderWidth: 1
+      },
+
+      {
+        label: '# of Views',
+        data: productViews,//********** data here*/
+        backgroundColor: [
+          'blue'
+        ],
+        borderColor: [
+          'blue'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  };
+
+  const myChart = new Chart(ctx, chartObject)
+}
+//   // const ctx = document.getElementById('myChart');
+
