@@ -3,6 +3,10 @@
 
 let votesAllowed = 5//decrement to end voting
 let ctx = document.getElementById('my-chart').getContext('2d')///canvas element
+////local storage
+let retrievedProducts = localStorage.getItem('products');///pull outta local storage
+let parsedProducts = JSON.parse(retrievedProducts);//parse the data so it can be read
+
 
 
 let allProducts = []
@@ -24,26 +28,34 @@ function product(name, fileExtension = 'jpg') {
 
   allProducts.push(this);//pushes objects into the allProducts array
 }
-//for png ('name', 'png')
-new product('bag')///call all the 'new products'
-new product('banana')
-new product('bathroom')
-new product('boots')
-new product('breakfast')
-new product('bubblegum')
-new product('chair')
-new product('cthulhu')
-new product('dog-duck')
-new product('dragon')
-new product('pen')
-new product('pet-sweep')
-new product('scissors')
-new product('shark')
-new product('sweep', 'png')
-new product('tauntaun')
-new product('unicorn')
-new product('water-can')
-new product('wine-glass')
+
+///local storage
+if(retrievedProducts){
+  allProducts = parsedProducts;///if there is local storage, use it
+} else{///if no local storage, instantiate new objects
+
+  //for png ('name', 'png')
+  new product('bag')///call all the 'new products'
+  new product('banana');
+  new product('bathroom');
+  new product('boots');
+  new product('breakfast');
+  new product('bubblegum');
+  new product('chair');
+  new product('cthulhu');
+  new product('dog-duck');
+  new product('dragon');
+  new product('pen');
+  new product('pet-sweep');
+  new product('scissors');
+  new product('shark');
+  new product('sweep', 'png');
+  new product('tauntaun');
+  new product('unicorn');
+  new product('water-can');
+  new product('wine-glass');
+
+}
 
 
 console.log(allProducts)//checks the array on line 6
@@ -111,6 +123,9 @@ function handleClick(event) {
   if (votesAllowed === 0) {
     myContainer.removeEventListener('click', handleClick);
     renderChart();
+    ///local storage///
+    let stringies = JSON.stringify(allProducts);///first stringify 
+    localStorage.setItem('products', stringies);
   }
 }
 
@@ -178,5 +193,4 @@ function renderChart() {
 
   const myChart = new Chart(ctx, chartObject)
 }
-//   // const ctx = document.getElementById('myChart');
 
