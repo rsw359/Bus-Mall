@@ -1,7 +1,7 @@
 'use strict'
 ///global variables///
 
-let votesAllowed = 5//decrement to end voting
+let votesAllowed = 25//decrement to end voting
 let ctx = document.getElementById('my-chart').getContext('2d')///canvas element
 ////local storage
 let retrievedProducts = localStorage.getItem('products');///pull outta local storage
