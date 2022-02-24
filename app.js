@@ -162,24 +162,24 @@ function renderChart() {
         label: '# of Clicks',
         data: productClicks,//********** data here*/
         backgroundColor: [
-          'red'
+          '#718355'
         ],
         borderColor: [
-          'red'
+          '#fefae0'
         ],
-        borderWidth: 1
+        borderWidth: 2
       },
 
       {
         label: '# of Views',
         data: productViews,//********** data here*/
         backgroundColor: [
-          'blue'
+          '#fefae0'
         ],
         borderColor: [
-          'blue'
+          '#718355'
         ],
-        borderWidth: 1
+        borderWidth: 2
       }]
     },
     options: {
